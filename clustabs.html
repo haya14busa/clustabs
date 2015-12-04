@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="clustabs">
+<head>
+  <meta charset="UTF-8">
+  <title>clustabs</title>
+  <script src="./modules/angular.min.js"></script>
+  <script src="clustabs.js"></script>
+</head>
+<body ng-cloak>
+  <h1>clustabs</h1>
+  <div ng-controller="ClustabsController as clustabs">
+    <ul>
+      <li ng-repeat="tab in clustabs.tabs track by $index">
+        <button ng-click="clustabs.remove($index)">x</button>
+        <img ng-src="{{tab.favicon}}" width="19" height="19">
+        <a ng-click="clustabs.select(tab)" target="_blank">{{tab.tab.title}}</a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
