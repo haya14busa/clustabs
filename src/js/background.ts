@@ -1,11 +1,7 @@
-export class Student {
-  fullname : string;
-  constructor(public firstname: string, public middleinitial: string, public lastname: string) {
-    this.fullname = firstname + " " + middleinitial + " " + lastname;
-  }
-}
+/// <reference path="../../typings/tsd.d.ts"/>
 
-export interface Person {
-  firstname: string;
-  lastname: string;
-}
+const html = 'clustabs.html';
+
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.tabs.create({url: chrome.extension.getURL('clustabs.html')});
+});

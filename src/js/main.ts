@@ -1,9 +1,4 @@
-import {Student, Person} from './background';
+/// <reference path="../../typings/tsd.d.ts"/>
+import * as angular from 'angular';
 
-function greeter(person : Person) {
-  return "Hello, " + person.firstname + " " + person.lastname;
-}
-
-var user = new Student("Jane", "M.", "User");
-
-console.log(greeter(user));
+let app = angular.module('clustabs');

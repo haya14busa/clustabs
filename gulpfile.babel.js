@@ -3,6 +3,7 @@
 import browserify from 'browserify';
 import es from 'event-stream';
 import gulp from 'gulp';
+import rename from 'gulp-rename';
 import rimraf from 'rimraf';
 import source from 'vinyl-source-stream';
 import sourcemaps from 'gulp-sourcemaps';
@@ -18,9 +19,15 @@ gulp.task('default', ['watch']);
 
 gulp.task('watch', () => {
   gulp.watch('src/js/**/*.ts', ['build:js']);
+  gulp.watch('src/**/*.html', ['build:html']);
+  gulp.watch('src/manifest.json', ['build:manifest']);
 });
 
-gulp.task('build:all', ['build:js']);
+gulp.task('build:all', [
+  'build:js',
+  'build:manifest',
+  'build:html',
+]);
 
 gulp.task('build:typescript', () => {
   return tsProject.src()
@@ -33,8 +40,9 @@ gulp.task('build:typescript', () => {
 
 gulp.task('build:js', ['build:typescript'], () => {
   const entries = [
-    'js/main.js', // TODO: for test
-    'js/background.js'
+    'js/clustabs.js',
+    'js/background.js',
+    'js/content.js'
   ];
   return es.merge.apply(es, entries.map((path)=> {
     return browserify(`./_dist/src/${path}`, { debug: true })
@@ -42,6 +50,19 @@ gulp.task('build:js', ['build:typescript'], () => {
       .pipe(source(path))
       .pipe(gulp.dest('./_dist'))
   }));
+});
+
+gulp.task('build:html', function () {
+  return gulp.src('src/**/*.html')
+    .pipe(rename((path) => {
+      path.dirname = path.dirname.replace('src', '');
+    }))
+    .pipe(gulp.dest('./_dist/'))
+});
+
+gulp.task('build:manifest', function () {
+  return gulp.src('src/manifest.json')
+    .pipe(gulp.dest('./_dist/'))
 });
 
 gulp.task('clean', (cb) => {
