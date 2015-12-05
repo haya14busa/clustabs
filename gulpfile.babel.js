@@ -9,6 +9,7 @@ import source from 'vinyl-source-stream';
 import sourcemaps from 'gulp-sourcemaps';
 import ts from 'gulp-typescript';
 import typescript from 'typescript';
+import uglify from 'gulp-uglify';
 
 const tsProject = ts.createProject('tsconfig.json', {
   typescript: typescript,
@@ -48,23 +49,30 @@ gulp.task('build:js', ['build:typescript'], () => {
     return browserify(`./_dist/src/${path}`, { debug: true })
       .bundle()
       .pipe(source(path))
-      .pipe(gulp.dest('./_dist'))
+      .pipe(gulp.dest('./_dist'));
   }));
 });
 
-gulp.task('build:html', function () {
+gulp.task('build:html', () => {
   return gulp.src('src/**/*.html')
     .pipe(rename((path) => {
       path.dirname = path.dirname.replace('src', '');
     }))
-    .pipe(gulp.dest('./_dist/'))
+    .pipe(gulp.dest('./_dist/'));
 });
 
-gulp.task('build:manifest', function () {
+gulp.task('build:manifest', () => {
   return gulp.src('src/manifest.json')
-    .pipe(gulp.dest('./_dist/'))
+    .pipe(gulp.dest('./_dist/'));
 });
 
 gulp.task('clean', (cb) => {
   return rimraf('./_dist', cb);
+});
+
+gulp.task('release', ['build:all'], () => {
+  rimraf('./_dist/src', () => {});
+  return gulp.src(['./_dist/**/*.js', '!./_dist/src/**/*.js'])
+    .pipe(uglify())
+    .pipe(gulp.dest('./_dist'));
 });
