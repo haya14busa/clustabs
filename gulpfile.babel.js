@@ -28,6 +28,7 @@ gulp.task('build:all', [
   'build:js',
   'build:manifest',
   'build:html',
+  'build:dict',
 ]);
 
 gulp.task('build:typescript', () => {
@@ -64,6 +65,11 @@ gulp.task('build:html', () => {
 gulp.task('build:manifest', () => {
   return gulp.src('src/manifest.json')
     .pipe(gulp.dest('./_dist/'));
+});
+
+gulp.task('build:dict', () => {
+  return gulp.src('./node_modules/kuromoji/dist/dict/*')
+    .pipe(gulp.dest('./_dist/dict'));
 });
 
 gulp.task('clean', (cb) => {

@@ -4,7 +4,8 @@
   "description": "clustering your tabs",
   "dependencies": {
     "angular": "^1.4.8",
-    "chrome-promise": "^1.0.6"
+    "chrome-promise": "^1.0.6",
+    "kuromoji": "0.0.5"
   },
   "devDependencies": {
     "babel-core": "^6.3.13",
